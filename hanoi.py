@@ -44,7 +44,6 @@ class State(object):
         t = []
         for p in self.posts:
             t.append(str(p))
-        #return "posts: %s; paths: %s" % (self.posts, self.paths)
         return "posts: %s; paths: %s" % ("-".join(t), self.paths)
 
     def display(self):
@@ -64,7 +63,6 @@ class State(object):
             for x in range(0, NUM_POSTS):
                 print rep[x][y],
             print
-        #print self.paths
 
 class Post(object):
     num_posts = 0
@@ -121,8 +119,6 @@ class Action(object):
         return (self.disk, self.src, self.dst)
         
     def __repr__(self):
-        #return "(D%s: P%s->P%s)" % (self.disk, self.src, self.dst)
-        #return "(p%s:d%s, p%s)" % (self.src, self.disk, self.dst)
         return "P%s:D%s -> P%s" % (self.src, self.disk, self.dst)
 
 class Game(object):
@@ -214,12 +210,9 @@ class Game(object):
         while not done:
             if not frontier:
                 return "Failed"
-            #state = frontier.pop(0)
             state = self.remove_choice(frontier)
             explored.append(state)
             self.iterations += 1
-            #print "ITERATION:", self.iterations
-            #state.display()
             if self.isGoal(state):
                 return state.paths
             for action in self.getPossibleActions(state):
