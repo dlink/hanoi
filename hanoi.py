@@ -1,5 +1,12 @@
 #!/usr/bin/env python
 
+'''Tower of Hanoi Puzzle Solver
+
+   Developed based on Game Therory Lecture by Peter Norvig in
+   Introduction to Artificial Intelligence given by Stamford
+   University.
+'''
+
 import sys
 from copy import deepcopy
 from collections import defaultdict
@@ -119,15 +126,22 @@ class Action(object):
         return "P%s:D%s -> P%s" % (self.src, self.disk, self.dst)
 
 class Game(object):
+    '''Preside over the game'''
+
     def __init__(self):
         self.iterations = 0
 
     def isGoal(self, state):
+        '''Return true if the puzzle is solved'''
+
         if state.posts[2].disks == [D4, D3, D2, D1]:
             return True
         return False
 
     def doAction(self, state, action):
+        '''Given a state and an action, perform that action
+           Return the new state
+        '''
         newState = deepcopy(state)
         newState.paths.append(action)
         disk, src_num, dst_num = action.getNumbers()
@@ -142,6 +156,9 @@ class Game(object):
         return newState
 
     def getPossibleActions(self, state):
+        '''Given a state
+           Return a LIST of possible actions from that state
+        '''
         actions = []
         for i, post in enumerate(state.posts):
             if i == 0:
@@ -161,6 +178,9 @@ class Game(object):
         return actions
 
     def getFrontier(self, state):
+        '''Given a state, perform all possible actions
+           Return a LIST of all resulting stages
+        '''
         frontier = []
         for action in self.getPossibleActions(state):
             newState = self.doAction(state, action)
@@ -168,12 +188,24 @@ class Game(object):
         return frontier
             
     def stateIn(self, state, state_list):
+        '''Given a state, and a LIST of states
+           Return True if state is in that list
+        '''
         for s in state_list:
             if state.equals(s):
                 return True
         return False
 
     def treeSearch(self, state):
+        '''Implements a Tree Search Algorithm to solve the Game
+
+           Starts with a Initial State.
+           Maintain two LISTs:  frontier, and explored
+
+           Iterates thru all possible states taken from frontier and
+           added to explored.  Then determine new frontier.  Until
+           solved or fails.
+        '''
         frontier = self.getFrontier(state)
         explored = [state]
         goal_states = []
@@ -199,6 +231,9 @@ class Game(object):
                 frontier.append(newState)
                 
     def remove_choice(self, frontier):
+        '''Return the next choice from frontier
+           Using algorithm Based on SEARCH_TYPE
+        '''
         if SEARCH_TYPE == 'breath-first':
             state = frontier.pop(0)
         elif SEARCH_TYPE == 'depth-first':
@@ -229,6 +264,8 @@ class Game(object):
         return state
 
     def play(self,state, paths):
+        '''Play the game, and solve the Puzzle'''
+
         print "Initial State:"
         state.display()
         i = 0
