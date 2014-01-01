@@ -224,7 +224,7 @@ class Game(object):
                 frontier.append(newState)
                 
     def remove_choice(self, frontier):
-        '''Return the next choice from frontier
+        '''Return the a state from frontier
            Using algorithm Based on SEARCH_TYPE
         '''
         if SEARCH_TYPE == 'breath-first':
