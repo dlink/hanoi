@@ -204,7 +204,6 @@ class Game(object):
         '''
         frontier = self.getFrontier(state)
         explored = [state]
-        goal_states = []
         done = 0
 
         while not done:
